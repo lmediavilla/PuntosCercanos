@@ -27,6 +27,10 @@ namespace LuisMediavilla_DAA
             }
             throw new ArgumentException("no estamos comparando puntos");
         }
+        public double distancia(punto p1, punto p2)
+        {
+            return Math.Sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+        }
     }
     class Program
     {
