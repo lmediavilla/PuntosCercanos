@@ -37,7 +37,7 @@ namespace LuisMediavilla_DAA
             {
                 for(int y=0;y<10;y++)
                 {
-                    for(int contador =0;contador<100;contador++)
+                    for(int contador =0;contador<vector.Length;contador++)
                     {
                        pintado = false;
                        if (vector[contador] == null) break;
