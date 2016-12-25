@@ -84,7 +84,7 @@ namespace LuisMediavilla_DAA
                     Console.Write(+vector[contador].x + "," + vector[contador].y + "");
                              
              }
-            Console.WriteLine();
+            Console.WriteLine("|");
              //miramos en el subconjunto de la izquierda
             //busca(vector, num / 2);
             //miramos en el subconjunto de la derecha
