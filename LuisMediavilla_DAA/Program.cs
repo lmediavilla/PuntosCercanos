@@ -106,38 +106,41 @@ namespace LuisMediavilla_DAA
             //buscamos el punto medio
             int medio = num / 2;
             punto pmedio = vectorX[medio];
-            
-            punto[] vectorYizq = new punto[medio];
-            for (int i = 0; i <(medio) -1; i++)
-            {
-                vectorYizq[i] = vectorY[i];
-            }
-            punto[] vectorYdcha = new punto[medio+1];
-            for (int i= 0; i<(vectorYdcha.Length) -1;i++)
-            {
-                
-                    Console.WriteLine("i= " + i);
-                Console.WriteLine("vectorY.Length-1-i: " +(vectorY.Length - 1 - i));
-                    vectorYdcha[i] = vectorY[vectorY.Length-1-i];
-               
-                
-            }
+            //dividimos por una linea vertical
+
+            punto[] vectorYizq = new punto[medio+1];
+            punto[] vectorYdcha = new punto[num - medio - 1];
+            Console.WriteLine("long Num:" + num);
+            Console.WriteLine("long Total:" + vectorY.Length);
+            Console.WriteLine("long Yizq:" + vectorYizq.Length);
+            Console.WriteLine("long Ydcha:" + vectorYdcha.Length);
             int li = 0;
             int ri = 0;
             for(int i=0;i<num;i++)
             {
                 if(vectorY[i].x<=pmedio.x)
                 {
-                    vectorYizq[li++] = vectorY[i];
+                    
+                    vectorYizq[li] = vectorY[i];
+                    li++;
+                    Console.WriteLine("Izquierda i: " + i);
                 }
                 else
                 {
-                    vectorYdcha[ri++] = vectorY[i];
+                  
+                    vectorYdcha[ri] = vectorY[i];
+                    ri++;
+                    Console.WriteLine("Derecha i: " + i);
                 }
             }
 
-            float DL = busca(vectorX, vectorYizq, num / 2);
-            float DR = busca(vectorX,vectorYdcha, num-medio);
+            float DL = busca(vectorX, vectorYizq, medio);
+            punto[] vectorXdcha = new punto[num/2];
+            for(int i=0;i<vectorX.Length;i++)
+            {
+                vectorXdcha[i] = vectorX[i];
+            }
+            float DR = busca(vectorXdcha,vectorYdcha, num-medio);
             //distancia minima total Dl Dr
             float Dlr = min(DL,DR);
             //creamos un vector con los puntos de metor distancia de Dlr
@@ -185,18 +188,14 @@ namespace LuisMediavilla_DAA
             int npuntos;
             punto[] vector;
             //comenta las siguietnes lineas 
-            npuntos = 10;
+            npuntos = 6;
             vector = new punto[npuntos];
-            vector[0] = new punto { x = 9, y = 9 };
-            vector[1] = new punto { x = 2, y = 5 };
-            vector[2] = new punto { x = 5, y = 5 };
-            vector[3] = new punto { x = 7, y = 1 };
-            vector[4] = new punto { x = 8, y = 3 };
-            vector[5] = new punto { x = 3, y = 5 };
-            vector[6] = new punto { x = 4, y = 1 };
-            vector[7] = new punto { x = 2, y = 9 };
-            vector[8] = new punto { x = 1, y = 7 };
-            vector[9] = new punto { x = 6, y = 2 };
+            vector[0] = new punto { x = 2, y = 3 };
+            vector[1] = new punto { x = 12, y = 30 };
+            vector[2] = new punto { x = 40, y = 50 };
+            vector[3] = new punto { x = 5, y = 1 };
+            vector[4] = new punto { x = 12, y = 10 };
+            vector[5] = new punto { x = 3, y = 4 };
             //comenta las siguientes lineas si quieres introducir los parametros manualmente
             //introducimos el numero de puntos a tratar
             /*  Console.WriteLine("Introduce el número de puntos a tratar (minimo 2): ");
@@ -237,7 +236,7 @@ namespace LuisMediavilla_DAA
                   }
                   contador++;
               }*/
-            imprimematriz(vector);
+           // imprimematriz(vector);
             Console.WriteLine("la respuesta es: "+ cercano(vector, npuntos));
             Console.WriteLine("fin");
             Console.ReadLine();
