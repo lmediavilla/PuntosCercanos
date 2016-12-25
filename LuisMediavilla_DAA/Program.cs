@@ -89,7 +89,7 @@ namespace LuisMediavilla_DAA
         static void Main(string[] args)
         {
             int npuntos;
-            punto[] vector = new punto[100];
+            punto[] vector;
             //introducimos el numero de puntos a tratar
             Console.WriteLine("Introduce el número de puntos a tratar (minimo 2): ");
             try
@@ -129,8 +129,8 @@ namespace LuisMediavilla_DAA
                 }
                 contador++;
             }
-            busca(vector, npuntos);
-            //imprimematriz(vector);
+            //busca(vector, npuntos);
+            imprimematriz(vector);
             Console.WriteLine("fin");
             Console.ReadLine();
         }
