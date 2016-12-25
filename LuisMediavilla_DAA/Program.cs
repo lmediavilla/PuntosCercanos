@@ -107,7 +107,21 @@ namespace LuisMediavilla_DAA
             int medio = num / 2;
             punto pmedio = vectorX[medio];
             //dividimos por una linea vertical
-
+            Console.WriteLine();
+            Console.WriteLine("Ordenados por vectorX");
+            for (int contador = 0; contador < vectorX.Length; contador++)
+            {
+                Console.Write("|");
+                Console.Write(+vectorX[contador].x + "," + vectorX[contador].y + "");
+            }
+            Console.WriteLine("|");
+            Console.WriteLine("Ordenados por vectorY");
+            for (int contador = 0; contador < vectorY.Length; contador++)
+            {
+                Console.Write("|");
+                Console.Write(+vectorY[contador].x + "," + vectorY[contador].y + "");
+            }
+            Console.WriteLine("|");
             punto[] vectorYizq = new punto[medio+1];
             punto[] vectorYdcha = new punto[num - medio - 1];
             Console.WriteLine("long Num:" + num);
@@ -127,7 +141,7 @@ namespace LuisMediavilla_DAA
                 }
                 else
                 {
-                  
+               
                     vectorYdcha[ri] = vectorY[i];
                     ri++;
                     Console.WriteLine("Derecha i: " + i);
