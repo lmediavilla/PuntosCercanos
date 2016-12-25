@@ -74,18 +74,19 @@ namespace LuisMediavilla_DAA
             double d;
             int desde, hast, a, b;
             //ordenamos los puntos por la coordenada x
+           
             Array.Sort(vector);
-            /*comprobar ordenacion correcta
+            Console.WriteLine("primera ordenacion");
             for (int contador = 0; contador < vector.Length; contador++)
             {
-                else
-                {
+                
                     Console.Write("|");
                     Console.Write(+vector[contador].x + "," + vector[contador].y + "");
-                }             
-             }*/
+                             
+             }
+            Console.WriteLine();
              //miramos en el subconjunto de la izquierda
-            busca(vector, num / 2);
+            //busca(vector, num / 2);
             //miramos en el subconjunto de la derecha
          //   busca(vector + num / 2, (num + 1) / 2);
 
@@ -95,23 +96,36 @@ namespace LuisMediavilla_DAA
             int npuntos;
             punto[] vector;
             //introducimos el numero de puntos a tratar
-            Console.WriteLine("Introduce el número de puntos a tratar (minimo 2): ");
-            try
-            {
-                npuntos = Convert.ToInt32(Console.ReadLine());
-                if (npuntos < 2) throw new Exception("¡¡¡minimo 2 puntos!!!");
-                Console.WriteLine("puntos: " + npuntos);
-                vector = new punto[npuntos];
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                Console.WriteLine("error");
-                Console.ReadKey();
-                return;
-            }
+            /*  Console.WriteLine("Introduce el número de puntos a tratar (minimo 2): ");
+              try
+              {
+                  npuntos = Convert.ToInt32(Console.ReadLine());
+                  if (npuntos < 2) throw new Exception("¡¡¡minimo 2 puntos!!!");
+                  Console.WriteLine("puntos: " + npuntos);
+                  vector = new punto[npuntos];
+              }
+              catch (Exception e)
+              {
+                  Console.WriteLine(e);
+                  Console.WriteLine("error");
+                  Console.ReadKey();
+                  return;
+              }*/
+            npuntos = 10;
+            vector = new punto[npuntos];
+         
+           vector[0] = new punto { x = 9, y = 9 };
+           vector[1] = new punto { x = 2, y = 5 };
+           vector[2] = new punto { x = 5, y = 5 };
+           vector[3] = new punto { x = 7, y = 1 };
+           vector[4] = new punto { x = 8, y = 3 };
+           vector[5] = new punto { x = 3, y = 5 };
+           vector[6] = new punto { x = 4, y = 1 };
+           vector[7] = new punto { x = 2, y = 9 };
+           vector[8] = new punto { x = 1, y = 7 };
+           vector[9] = new punto { x = 6, y = 2 };
             //introducimos los puntos en el vector de puntos
-            int contador = 0;
+          /*  int contador = 0;
             while (contador < npuntos)
             {
                 try
@@ -132,9 +146,11 @@ namespace LuisMediavilla_DAA
                     return;
                 }
                 contador++;
-            }
-            //busca(vector, npuntos);
+            }*/
+            
+            
             imprimematriz(vector);
+            busca(vector, npuntos);
             Console.WriteLine("fin");
             Console.ReadLine();
         }
