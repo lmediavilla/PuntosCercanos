@@ -1,50 +1,119 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LuisMediavilla_DAA
 {
- 
-    public class punto
+
+    public class punto : IComparable
     {
-        public int x { get; set; }
-        public int y { get; set; }
-      public punto()
+        public double x { get; set; }
+        public double y { get; set; }
+ 
+        public int CompareTo(object obj)
         {
-            
-        }
-        public punto(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
+            if (obj is punto)
+            {
+                return this.x.CompareTo((obj as punto).x);
+            }
+            throw new ArgumentException("no estamos comparando puntos");
         }
     }
     class Program
     {
-        public static float distancia(punto p1, punto p2)
+        public static punto c1 = new punto();
+        public static punto c2 = new punto();
+        static double mindist = Double.MaxValue;
+        public static double distancia;
+        static void busca(punto[] p)
         {
-            return (float)Math.Sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+            double d;
+            int desde, hasta, a, b;
+            int num = p.Length;
+            if (num <= 1) 
+            {
+                   return;
+            }
+            //subvecotr izquierdo
+            punto[] pI = new punto[(num / 2)];
+        
+            for (int i = 0; i < pI.Length; i++)
+            {
+                pI[i] = p[i];
+            }
+            busca(pI);
+            //subvector derecho
+            punto[] pD = new punto[p.Length - pI.Length-1];
+            for (int i = 0; i < pD.Length; i++)
+            {
+                pD[i] = p[p.Length - i - 1];
+            }
+            busca(pD);
+       
+            // Hallar los límites del conjunto central.
+          // for (desde = num / 2; desde > 0 && p[num / 2].x - p[desde].x < mindist; desde--) ;
+           // Console.WriteLine("p[num / 2].x: " + p[num / 2].x);
+          //  Console.WriteLine("p[desde].x" + p[num/2].x);
+           desde = num / 2;
+            while(desde > 0 && p[num / 2].x - p[desde].x < mindist)
+            {
+               desde--;
+
+            }
+          //  for (hasta = num / 2; hasta < num - 1 && p[hasta].x - p[num / 2].x < mindist; hasta++) ;
+            hasta = num / 2;
+            while (hasta < num - 1 && p[hasta].x - p[num / 2].x < mindist)
+            {
+                    hasta++;
+ 
+            }
+            // Búsqueda minimos en el conjunto central
+            for (a = desde; a <= hasta; a++)
+            {
+                for (b = a + 1; b <= hasta; b++)
+                {
+                    d = pitagoras(p[a], p[b]);
+                    if (d < mindist)
+                    {
+                        mindist = d;
+                        c1.x = p[a].x;
+                        c1.y = p[a].y;
+                        c2.x = p[b].x;
+                        c2.y = p[b].y;
+                    }
+                }
+            }
+            distancia = pitagoras(c1,c2);
+        }
+        public static double pitagoras(punto p1, punto p2)
+        {
+            return Math.Sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
         }
         public static void imprimematriz(punto[] vector)
         {
-           
-        bool pintado = false;
-            for (int x=0;x<10;x++)
+            int max;
+            if(vector[vector.Length - 1].x> vector[vector.Length - 1].y)
             {
-                for(int y=0;y<10;y++)
+                max = Convert.ToInt32(vector[vector.Length - 1].x);
+            }
+            else
+            {
+                max = Convert.ToInt32(vector[vector.Length - 1].y);
+            }
+            
+            bool pintado = false;
+            for (int x = 0; x <= max; x++)
+            {
+                for (int y = 0; y <= max; y++)
                 {
-                    for(int contador =0;contador<vector.Length;contador++)
+                    for (int contador = 0; contador < vector.Length; contador++)
                     {
-                       pintado = false;
-                       if (vector[contador] == null) break;
-                       if ((vector[contador].x == x)&&(vector[contador].y == y))
-                       {
+                        pintado = false;
+                        if (vector[contador] == null) break;
+                        if ((vector[contador].x == x) && (vector[contador].y == y))
+                        {
                             Console.Write("|");
                             Console.BackgroundColor = ConsoleColor.Red;
                             Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write(+ x + "," + y + "");
+                            Console.Write(+x + "," + y + "");
                             Console.ResetColor();
                             pintado = true;
                             break;
@@ -58,203 +127,112 @@ namespace LuisMediavilla_DAA
                 Console.WriteLine("|");
             }
         }
-        public static float fuerzabruta(punto[] vector, int num)
+        public static void dividevector(punto[] p)
         {
-            //este codigo se ejecuta cuando solo quedan 3 puntos o menos
-            float min = float.MaxValue;
-            for(int i=0;i<num;i++)
+            int num = p.Length;
+            if (num <= 1) // Si no hay pares de puntos:
             {
-                for(int j=i+1;j<num;j++)
-                {
-                    min = distancia(vector[i], vector[j]);
-                }
+                Console.WriteLine("fin");
+                return; // salir.
             }
-            return min;
-        }
-        public static float min(float x, float y)
-        {
-            if(x<y)
+            Console.WriteLine("Vector P");
+            for (int i = 0; i < p.Length; i++)
             {
-                return x;
+                Console.WriteLine("p[i].x: " + p[i].x + "  " + "p[i].y: " + p[i].y);
             }
-            else
+            Console.WriteLine("----------------------------------");
+            punto[] pI = new punto[(num / 2)];
+            punto[] pD = new punto[p.Length-(num/2)];
+            for (int i = 0; i < num / 2 ; i++)
             {
-                return y;
+                pI[i] = p[i];
             }
-        }
-        static float stripClosest(punto[] vector, int tamano, float d)
-        {
-            float min = d;
-            for (int i = 0; i < tamano; ++i)
+            Console.WriteLine("Vector izquierdo: ");
+            for (int i = 0; i < pI.Length; i++)
             {
-                for (int j = i + 1; j < tamano && (vector[j].y - vector[i].y) < min; ++j)
-                {
-                    if (distancia(vector[i], vector[j]) < min)
-                    {
-                        min = distancia(vector[i], vector[j]);
-                    }
-                }
-             }
-            return min;
-        }
-        public static float busca(punto[] vectorX, punto[] vectorY, int num)
-        {
-            if(num<=3)
-            {
-                fuerzabruta(vectorX, num);
+                Console.WriteLine("pI[i].x: " + pI[i].x + "  " + "pI[i].y: " + pI[i].y);
             }
-            //buscamos el punto medio
-            int medio = num / 2;
-            punto pmedio = vectorX[medio];
-            //dividimos por una linea vertical
-            Console.WriteLine();
-            Console.WriteLine("Ordenados por vectorX");
-            for (int contador = 0; contador < vectorX.Length; contador++)
-            {
-                Console.Write("|");
-                Console.Write(+vectorX[contador].x + "," + vectorX[contador].y + "");
-            }
-            Console.WriteLine("|");
-            Console.WriteLine("Ordenados por vectorY");
-            for (int contador = 0; contador < vectorY.Length; contador++)
-            {
-                Console.Write("|");
-                Console.Write(+vectorY[contador].x + "," + vectorY[contador].y + "");
-            }
-            Console.WriteLine("|");
-            punto[] vectorYizq = new punto[medio+1];
-            punto[] vectorYdcha = new punto[num - medio - 1];
-            Console.WriteLine("long Num:" + num);
-            Console.WriteLine("long Total:" + vectorY.Length);
-            Console.WriteLine("long Yizq:" + vectorYizq.Length);
-            Console.WriteLine("long Ydcha:" + vectorYdcha.Length);
-            int li = 0;
-            int ri = 0;
-            for(int i=0;i<num;i++)
-            {
-                if(vectorY[i].x<=pmedio.x)
-                {
-                    
-                    vectorYizq[li] = vectorY[i];
-                    li++;
-                    Console.WriteLine("Izquierda i: " + i);
-                }
-                else
-                {
-               
-                    vectorYdcha[ri] = vectorY[i];
-                    ri++;
-                    Console.WriteLine("Derecha i: " + i);
-                }
-            }
+            Console.WriteLine("----------------------------------");
+            // Mirar en el subconjunto de la derecha.
 
-            float DL = busca(vectorX, vectorYizq, medio);
-            punto[] vectorXdcha = new punto[num/2];
-            for(int i=0;i<vectorX.Length;i++)
+            for (int i = 0; i < pD.Length; i++)
             {
-                vectorXdcha[i] = vectorX[i];
+                pD[i] = p[p.Length - i-1];
             }
-            float DR = busca(vectorXdcha,vectorYdcha, num-medio);
-            //distancia minima total Dl Dr
-            float Dlr = min(DL,DR);
-            //creamos un vector con los puntos de metor distancia de Dlr
-            punto[] strip = new punto[num];
-            int x = 0;
-            for(int i=0;i< num; i++)
+            Console.WriteLine("Vector derecho: ");
+            for (int i = 0; i < pD.Length; i++)
             {
-                if(Math.Abs(vectorY[i].x - pmedio.x)<Dlr)
-                {
-                    strip[x] = vectorY[i];
-                    x++;
-                }
+                Console.WriteLine("pD[i].x: " + pD[i].x + "  " + "pD[i].y: " + pD[i].y);
             }
-            return min(Dlr, stripClosest(strip, x, Dlr));
-        }
-        static float cercano(punto[] vector, int num)
-        {
-            punto[] vectorX = new punto[num];
-            punto[] vectorY = new punto[num];
-            for (int i=0;i<vector.Length;i++)
-            {
-                vectorX[i] = vector[i];
-                vectorY[i] = vector[i];
-            }
-            Array.Sort(vectorX, (f1, f2) => f1.x.CompareTo(f2.x));
-            Array.Sort(vectorY, (P1, P2) => P1.y.CompareTo(P2.y));
-            Console.WriteLine("Ordenados por X");
-            for (int contador = 0; contador < vector.Length; contador++)
-            {
-                Console.Write("|");
-                Console.Write(+vectorX[contador].x + "," + vectorX[contador].y + "");
-            }
-            Console.WriteLine("|");
-            Console.WriteLine("Ordenados por Y");
-            for (int contador = 0; contador < vector.Length; contador++)
-            {
-                Console.Write("|");
-                Console.Write(+vectorY[contador].x + "," + vectorY[contador].y + "");
-            }
-            Console.WriteLine("|");
-            return busca(vectorX, vectorY, num);
+            Console.WriteLine("----------------------------------");
+            dividevector(pI);
+            dividevector(pD);
+
+
         }
         static void Main(string[] args)
         {
-            int npuntos;
+           //int a, num;
+
+            /*   punto[] vector = new punto[6];
+               vector[0] = new punto { x = 2d, y = 3d };
+               vector[1] = new punto { x = 12d, y = 30d };
+               vector[2] = new punto { x = 40d, y = 50d };
+               vector[3] = new punto { x = 5d, y = 1d };
+               vector[4] = new punto { x = 13d, y = 10d };
+               vector[5] = new punto { x = 3d, y = 4d };*/
+            //primero ordenamos el vector por su valor de X
+
+            //dividevector(vector);
             punto[] vector;
-            //comenta las siguietnes lineas 
-            npuntos = 6;
-            vector = new punto[npuntos];
-            vector[0] = new punto { x = 2, y = 3 };
-            vector[1] = new punto { x = 12, y = 30 };
-            vector[2] = new punto { x = 40, y = 50 };
-            vector[3] = new punto { x = 5, y = 1 };
-            vector[4] = new punto { x = 12, y = 10 };
-            vector[5] = new punto { x = 3, y = 4 };
-            //comenta las siguientes lineas si quieres introducir los parametros manualmente
-            //introducimos el numero de puntos a tratar
-            /*  Console.WriteLine("Introduce el número de puntos a tratar (minimo 2): ");
-              try
-              {
-                  npuntos = Convert.ToInt32(Console.ReadLine());
-                  if (npuntos < 2) throw new Exception("¡¡¡minimo 2 puntos!!!");
-                  Console.WriteLine("puntos: " + npuntos);
-                  vector = new punto[npuntos];
-              }
-              catch (Exception e)
-              {
-                  Console.WriteLine(e);
-                  Console.WriteLine("error");
-                  Console.ReadKey();
-                  return;
-              }*/
-            //introducimos los puntos en el vector de puntos
-            /*  int contador = 0;
-              while (contador < npuntos)
-              {
-                  try
-                  {
-                      Console.WriteLine("Coordenada X punto " + contador + ": ");
-                      int x = Convert.ToInt32(Console.ReadLine());
-                      if (x > 9) throw new Exception("numero muy grande");
-                      Console.WriteLine("Coordenada Y punto " + contador + ": ");
-                      int y = Convert.ToInt32(Console.ReadLine());
-                      if (y > 9) throw new Exception("numero muy grande");
-                      vector[contador] = new punto(x, y);
-                  }
-                  catch (Exception e)
-                  {
-                      Console.WriteLine(e);
-                      Console.WriteLine("error");
-                      Console.ReadKey();
-                      return;
-                  }
-                  contador++;
-              }*/
-           // imprimematriz(vector);
-            Console.WriteLine("la respuesta es: "+ cercano(vector, npuntos));
-            Console.WriteLine("fin");
+            int contador = 0;
+             int   npuntos = 0;
+             //introducimos los puntos en el vector de puntos
+              
+            Console.WriteLine("Introduce el número de puntos a tratar (minimo 2): ");
+            try
+            {
+                npuntos = Convert.ToInt32(Console.ReadLine());
+                if (npuntos < 2) throw new Exception("¡¡¡minimo 2 puntos!!!");
+                Console.WriteLine("puntos: " + npuntos);
+                vector = new punto[npuntos];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Console.WriteLine("error");
+                Console.ReadKey();
+                return;
+            }
+            
+            while (contador < npuntos)
+            {
+                try
+                {
+                    Console.WriteLine("Coordenada X punto " + contador + ": ");
+                    int x = Convert.ToInt32(Console.ReadLine());
+                    if (x < 0) throw new Exception("numero muy pequeño");
+                    Console.WriteLine("Coordenada Y punto " + contador + ": ");
+                    int y = Convert.ToInt32(Console.ReadLine());
+                    if (y < 0) throw new Exception("numero muy pequeño");
+                    vector[contador] = new punto { x = x, y = y };
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    Console.WriteLine("error");
+                    Console.ReadKey();
+                    return;
+                }
+                contador++;
+            }
+            
+            Array.Sort(vector);
+            imprimematriz(vector);
+            busca(vector);
+           Console.WriteLine("Soluicon x1:" + c1.x + " y1:" + c1.y + " x2:" + c2.x + " y2:" + c2.y);
+            Console.WriteLine("Con distancia: " + distancia);
             Console.ReadLine();
         }
-     
     }
 }
